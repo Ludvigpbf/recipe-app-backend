@@ -23,6 +23,16 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function recipes()
+    {
+        return $this->belongsToMany(Rovie::class);
+    }
+
+    public function lists()
+    {
+        return $this->belongsToMany(UserList::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
