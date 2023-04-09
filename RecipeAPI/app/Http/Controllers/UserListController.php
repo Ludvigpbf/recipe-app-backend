@@ -79,4 +79,21 @@ class UserListController extends Controller
         $list->recipes()->syncWithoutDetaching($request->recipe_id);
         return view('search-recipe', ['recipes' => $recipes, 'lists' => $lists]);
     }
+
+    public function createList(Request $request)
+    {
+        $fields = $request->validate([
+            'title' => 'required|string',
+        ]);
+        $list = UserList::create([
+            'title' => $fields['title'],
+        ]);
+      
+        $response = [
+            'title' => $list,
+        ];
+
+        return response($response, 201);
+    }
+
 }

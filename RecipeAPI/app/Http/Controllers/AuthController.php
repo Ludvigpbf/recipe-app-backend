@@ -73,4 +73,47 @@ class AuthController extends Controller
             ], 400);
         }
     }
+
+    /* // Update password
+
+    public function update(Request $request)
+    {
+
+        $fields = $request->validate([
+            'password' => 'required|string'
+        ]);
+        
+        $user = User::create([
+            'password' => bcrypt($fields['password'])
+        ]);
+        
+
+        if (!$user || !HASH::check($fields['password'], $user->password)) {
+            return response([
+                "message" => "Password not correct"
+            ], 401);
+        }
+
+        return response($response, 201);
+    }
+
+    // Delete account
+
+    public function destroy(Request $request): RedirectResponse
+    {
+        $request->validateWithBag('userDeletion', [
+            'password' => ['required', 'current-password'],
+        ]);
+
+        $user = $request->user();
+
+        Auth::logout();
+
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return Redirect::to('/');
+    } */
 }
