@@ -25,7 +25,7 @@ class User extends Authenticatable
 
     public function recipes()
     {
-        return $this->belongsToMany(Rovie::class);
+        return $this->belongsToMany(Recipe::class);
     }
 
     public function lists()
