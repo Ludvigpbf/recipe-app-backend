@@ -29,6 +29,16 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('getuser/{id}', [AuthController::class, 'getUser']);
     // Create a list
     Route::post('list', [UserListController::class, 'createList']);
-    
+    // Update a list
+    Route::post('editList', [UserListController::class, 'editList']);
+    // Get user lists
+    Route::get('lists', [UserListController::class, 'showList']);
+    // Get Favourite recipes list
+    Route::get('lists/Favourite%20recipes', [UserListController::class, 'getListByTitle']);
+    /* // Get user lists
+    Route::get('list-details/{id}', [UserListController::class, 'showList']); */
+    // Add recipes to list
+    Route::post('recipe-details/{id}', [RecipeController::class, 'addRecipeToList']);
+
 
 });

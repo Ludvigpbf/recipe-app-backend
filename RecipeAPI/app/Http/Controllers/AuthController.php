@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -20,6 +21,13 @@ class AuthController extends Controller
             'email' => $fields['email'],
             'password' => bcrypt($fields['password'])
         ]);
+
+        $list = new UserList([
+            'title' => 'Favourite recipes',
+        ]);
+
+        $user->userLists()->save($list);
+
         $token = $user->createToken('myAppToken')->plainTextToken;
 
         $response = [

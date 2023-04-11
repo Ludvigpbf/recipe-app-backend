@@ -26,10 +26,8 @@ class UserListController extends Controller
         $list = new UserList([
             'title' => $request->input('title'),
         ]);
-        $user->lists()->save($list);
-        return redirect()->back()->with('success', 'List created successfully');
-    } else {
-        return redirect()->route('login');
+        $user->userLists()->save($list);
+        return response()->json(['message' => 'List created successfully'], 200);
     }
     }
 
@@ -43,13 +41,32 @@ class UserListController extends Controller
     }
 
 
-    public function saveList(Request $request)
+    public function editList(Request $request)
     {
         $user = Auth::user();
         $list = UserList::find($request->input('list_id'));
         $list->title = $request->input('title');
         $list->save();
-        return redirect()->back()->with('success', 'List saved successfully');
+        return redirect()->back()->with('success', 'List updated successfully');
     }
+
+    public function showList(Request $request)
+    {
+        $user = Auth::user();
+        $lists = $user->userLists;
+        return response()->json(['lists' => $lists], 200);
+    }
+
+    public function getListByTitle($title)
+{
+    
+    $list = UserList::where('title', 'Favourite recipes')->first();
+
+    if (!$list) {
+        return response()->json(['message' => 'List not found'], 404);
+    }
+
+    return response()->json(['list' => $list], 200);
+}
 
 }

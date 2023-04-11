@@ -18,11 +18,18 @@ class RecipeController extends Controller
         return view('search-recipe', ['recipes' => $recipes, 'lists' => $lists]);
     }
 
-    public function recipesIndex()
+    public function addRecipeToList(Request $request)
     {
-        $recipes = Recipe::get();
 
-        return view('search-recipe', ['recipes' => $recipes]);
+        $recipeId = $request->input('recipe_id');
+        $listId = $request->input('list_id');
+
+        $recipe = Recipe::find($recipeId);
+        $list = UserList::find($listId);
+
+        $list->recipes()->attach($recipe);
+
+        return response()->json(['message' => 'Recipe added to list successfully'], 200);
     }
 
 

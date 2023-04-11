@@ -28,7 +28,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Recipe::class, 'user_recipe', 'user_id', 'recipe_id');
     }
 
-    public function lists()
+    public function userLists()
     {
         return $this->belongsToMany(UserList::class, 'user_user_list', 'user_id', 'user_list_id');
     }
