@@ -7,10 +7,11 @@ use App\Models\UserList;
 use App\Models\User;
 use App\Models\Recipe;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 
 class UserListController extends Controller
 {
-    public function showLists($id)
+    /* public function showLists($id)
     {
         $users = User::find($id);
         $recipes = Recipe::find($id);
@@ -78,9 +79,9 @@ class UserListController extends Controller
         $list->users()->syncWithoutDetaching($request->user_id);
         $list->recipes()->syncWithoutDetaching($request->recipe_id);
         return view('search-recipe', ['recipes' => $recipes, 'lists' => $lists]);
-    }
+    } */
 
-    public function createList(Request $request)
+   /*  public function createList(Request $request)
     {
         $fields = $request->validate([
             'title' => 'required|string',
@@ -94,6 +95,49 @@ class UserListController extends Controller
         ];
 
         return response($response, 201);
+    } */
+
+    public function __construct()
+{
+    $this->middleware('auth');
+}
+
+    // Create a new list for the logged-in user
+    public function createList(Request $request)
+    {
+       // Check if user is authenticated
+       if (Auth::check()) {
+        $user = Auth::user();
+        $list = new UserList([
+            'title' => $request->input('title'),
+        ]);
+        $user->lists()->save($list);
+        $user->lists()->attach($list->id, ['user_id' => $user->id]);
+        return redirect()->back()->with('success', 'List created successfully');
+    } else {
+        // User is not logged in, handle the error
+        // For example, you can redirect to a login page or return an error response
+        return redirect()->route('login');
+    }
+    }
+
+    // Add a recipe to a list for the logged-in user
+    public function addRecipeToList(Request $request)
+    {
+        $user = Auth::user();
+        $list = UserList::find($request->input('list_id'));
+        $list->recipes()->attach($request->input('recipe_id'), ['user_id' => $user->id]);
+        return redirect()->back()->with('success', 'Recipe added to list successfully');
+    }
+
+    // Save changes to a list for the logged-in user
+    public function saveList(Request $request)
+    {
+        $user = Auth::user();
+        $list = UserList::find($request->input('list_id'));
+        $list->title = $request->input('title');
+        $list->save();
+        return redirect()->back()->with('success', 'List saved successfully');
     }
 
 }
