@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,8 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('logout', [AuthController::class, 'logout']);
     // Get specific user details
     Route::get('getuser/{id}', [AuthController::class, 'getUser']);
+    // Create a list
+    Route::post('list', [UserListController::class, 'createList']);
     
-    // TODO: CRUD for recipe lists
+
 });
