@@ -15,16 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('label');
             $table->string('idref');
-            /* $table->string('image');
-            $table->text('ingredients');
-            $table->integer('yield');
-            $table->string('link');
-            $table->integer('time');
-            $table->text('allergens');
-            $table->text('diets');
-            $table->string('meal');
-            $table->string('dish');
-            $table->string('cuisine'); */
             $table->timestamps();
         });
     }
